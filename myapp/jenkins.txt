@@ -1,28 +1,38 @@
 pipeline {
     agent any
 
-      stage('Build') {
-            steps {
-                dir('myapp') {
-                    sh 'mvn clean compile'
-                }
+    
+
+        stage('Build') {
+            dir(myapp) {
+            	steps{
+                sh 'mvn clean compile'
             }
+          }
         }
 
         stage('Test') {
-            steps {
-                dir('myapp') {
-                    sh 'mvn test'
-                }
-            }
-        }
+        	dir(myapp) {
+            		steps {
+               			 sh 'mvn test'
+        		    }
+      			  }
+      		  }	
 
         stage('Package') {
+        	dir(myapp) {	
             steps {
-                dir('myapp') {
-                    sh 'mvn package'
-                }
+                sh 'mvn package'
             }
         }
-    }
+        }
 
+        stage('Archive Artifacts') {
+        	dir(myapp) {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
+        }
+    }
+}

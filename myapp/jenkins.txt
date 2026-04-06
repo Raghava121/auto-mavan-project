@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+      stage('Build') {
+            steps {
+                dir('myapp') {
+                    sh 'mvn clean compile'
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir('myapp') {
+                    sh 'mvn test'
+                }
+            }
+        }
+
+        stage('Package') {
+            steps {
+                dir('myapp') {
+                    sh 'mvn package'
+                }
+            }
+        }
+    }
+}
